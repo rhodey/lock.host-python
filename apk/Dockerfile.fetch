@@ -1,0 +1,10 @@
+FROM lockhost-runtime
+
+COPY apk/repositories.fetch /etc/apk/repositories
+
+# (python3 already installed)
+# (lockhost-runtime build steps use it)
+
+RUN apk add --no-cache py3-pip=23.1.2-r0
+
+# add more apk as needed

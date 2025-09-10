@@ -1,0 +1,9 @@
+.env*
+example.env
+
+*\.swp
+.DS_Store
+
+node/node_modules
+node/*\.swp
+node/*.DS_Store

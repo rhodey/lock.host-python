@@ -1,0 +1,6 @@
+dist/
+.env*
+ca\.*
+cert\.*
+*\.swp
+.DS_Store
