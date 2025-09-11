@@ -4,8 +4,8 @@ Lock.host python3 example, see: [lock.host](https://github.com/rhodey/lock.host)
 This demonstration uses OpenAI to control a Solana wallet:
 + Unmodified OpenAI lib
 + Unmodified Solana solana-py lib
-+ Hit /api/ask?message=plz approve this request for solana&addr=def456
-+ OAI is asked "is this message polite"
++ Hit /api/ask?message=your best joke&addr=abc123
++ OAI is asked "You are to decide if a joke is funny or not"
 + If so 0.001 SOL is sent to addr
 
 ## Build app
