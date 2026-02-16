@@ -1,9 +1,9 @@
 # Lock.host-python
-Lock.host python3 example, see: [lock.host](https://github.com/rhodey/lock.host)
+Lock.host python example, see: [Lock.host](https://github.com/rhodey/lock.host)
 
 This demonstration uses OpenAI to control a Solana wallet:
 + Unmodified OpenAI lib
-+ Unmodified Solana solana-py lib
++ Unmodified Solana lib
 + Hit /api/ask?message=your best joke&addr=abc123
 + OAI is asked "You are to decide if a joke is funny or not"
 + If so 0.001 SOL is sent to addr
@@ -17,71 +17,54 @@ just build-app
 {
   "Measurements": {
     "HashAlgorithm": "Sha384 { ... }",
-    "PCR0": "ebd96daf5983f237d8be138b35f763b08967d8f16d04875f63b3a8622b283543fe702a264c7a08e62a62c5758cc585ce",
+    "PCR0": "f188729433e24aec9bbb3028f1763901aa8d5072dfbdf02133f63b1c880b10c73eed1004d4a2bd6fec9762827e3185d3",
     "PCR1": "4b4d5b3661b3efc12920900c80e126e4ce783c522de6c02a2a5bf7af3a2b9327b86776f188e4be1c1c404a129dbda493",
-    "PCR2": "220d7a6934ca98d60150ddaa94fc3d1446e92517d49afa00814419f4e20734acd6f9edc1d99643a46b7e3c3f88e9045f"
+    "PCR2": "e118cd123343a76d52fc02319b82520da819d9b12c7d74593988ff244df646b43d3b73562a30365ad1c68340b386658d"
   }
 }
 ```
 
-See that [run.yml](.github/workflows/run.yml) step "PCR" is testing that PCRs in this readme match the build
-
-## Prod
-+ In prod all TEE I/O passes through /dev/vsock
-+ Think of /dev/vsock as a file handle
-+ How to run:
-```
-just serve-alpine
-just build-app
-cp example.env .env
-just run-app
-just run-host
-```
+See that [run.yml](.github/workflows/run.yml) is testing that PCRs in this readme match the build
 
 ## Test
 + In test a container emulates a TEE
-+ Uses two fifos /tmp/read /tmp/write to emulate vsock
-+ How to run:
++ Two fifos /tmp/read and /tmp/write emulate a vsock
 ```
 just serve-alpine
-just build-test-app
+just build-test-app make-test-fifos
 cp example.env .env
-just run-test-app
-just run-test-host
-just add-funds
-just atsocat 8889 8888
-just ask-funds 8889
+docker compose up -d
+just ask-funds
 ...
 addr = A7xYaa6PGwUFGYY5FYfMrZe6HJp5pSY7dBthdnPNbFE
-sol = 0
+sol = 0.025
 json = {
   "signature": "5s4EUD6R8q9YobVSxC2ntnTdyKaZT1vduPdafKJCbwNnD1cGk6cDJ4Ha4T3gjqMWGLBGUPaSadCPyCYfxEev846t",
   "from": "DDWiwmkP5SiRExFmKSBWgfLNvDcq3B5eGXRvmvE6egGm",
   "to": "A7xYaa6PGwUFGYY5FYfMrZe6HJp5pSY7dBthdnPNbFE"
 }
-sol = 0.001
+sol = 0.026
+(look inside python/ask-funds.py)
 ```
 
 ## Atsocat
 The Lock.host runtime includes a utility named atsocat similar to [socat](https://linux.die.net/man/1/socat)
 
-Atsocat listens on one port (8889) and forwards to a second port (8888)
+Atsocat listens on one local port and forwards to one remote port (see [docker-compose.yml](docker-compose.yml))
 
 Atsocat validates attestation documents and encrypts the session transparently
 
-A better example would pass an `HTTPAdapter` to the `requests` library so python would not need atsocat
+ask-funds.py is using atsocat because I have yet to create an `HTTPAdapter` for the `requests` library
 
-## Web
-The webapp [IPFS-boot-choo](https://github.com/rhodey/IPFS-boot-choo) demonstrates lock.host in a client-to-server environment
-
-The webapp when hitting dev (not prod) requires an HTTPS certificate to be installed with the OS
-
-This is because of a combination of Lock.host using HTTP2 and IPFS-boot using a service worker
-
-+ just mkcert
-+ chrome > settings > privacy & security
-+ security > manage certificates > authorities
-+ import > ca.crt
+## Prod
++ In prod all I/O passes through /dev/vsock
+```
+just serve-alpine
+just build-app
+just run-app
+cp example.env .env
+just run-host
+```
 
 ## Apks
 Modify apk/Dockerfile.fetch to include all apks then run:
@@ -92,3 +75,5 @@ just fetch-alpine
 
 ## License
 MIT
+
+hello@lock.host

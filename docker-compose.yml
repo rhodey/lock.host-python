@@ -1,0 +1,42 @@
+networks:
+  locknet:
+    name: locknet
+    external: true
+
+services:
+  app:
+    container_name: app
+    image: lockhost-node-test-app
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - /tmp/read:/tmp/write
+      - /tmp/write:/tmp/read
+    networks:
+      locknet:
+
+  host:
+    container_name: host
+    image: lockhost-host
+    depends_on:
+      - app
+    volumes:
+      - /tmp/read:/tmp/read
+      - /tmp/write:/tmp/write
+    networks:
+      locknet:
+    ports:
+      - "8888:8888"
+    env_file: ".env"
+    command: ["8888"]
+
+  atsocat:
+    container_name: atsocat
+    image: lockhost-host
+    depends_on:
+      - host
+    networks:
+      locknet:
+    ports:
+      - "8889:8889"
+    entrypoint: bash -c "sleep 2 && /runtime/atsocat.sh 8889 https://host:8888"

@@ -1,10 +1,10 @@
 # pin
-FROM amazonlinux@sha256:5bf791027b4659e73c33a88a3fa2b314b8e2c0ee60cb1088a097171ee7f180db
+FROM amazonlinux@sha256:97073cc66ae1fe66d59315987c36f4eeb98242a85086e972b4109bab4cb57454
 
 # nitro-cli
 RUN dnf update -y
-RUN dnf install -y aws-nitro-enclaves-cli-1.3.1-0.amzn2023
-RUN dnf install -y aws-nitro-enclaves-cli-devel-1.3.1-0.amzn2023
+RUN dnf install -y aws-nitro-enclaves-cli-1.4.4-0.amzn2023
+RUN dnf install -y aws-nitro-enclaves-cli-devel-1.4.4-0.amzn2023
 RUN usermod -aG ne root
 RUN usermod -aG docker root
 

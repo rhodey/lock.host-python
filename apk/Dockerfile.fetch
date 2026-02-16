@@ -1,10 +1,10 @@
-FROM lockhost-runtime
+# alpine 3.22.2
+FROM alpine@sha256:85f2b723e106c34644cd5851d7e81ee87da98ac54672b29947c052a45d31dc2f
 
 COPY apk/repositories.fetch /etc/apk/repositories
 
 # (python3 already installed)
-# (lockhost-runtime build steps use it)
-
-RUN apk add --no-cache py3-pip=23.1.2-r0
+# (lockhost-runtime uses it)
+RUN apk add --no-cache py3-pip
 
 # add more apk as needed
