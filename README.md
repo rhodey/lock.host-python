@@ -17,9 +17,9 @@ just build-app
 {
   "Measurements": {
     "HashAlgorithm": "Sha384 { ... }",
-    "PCR0": "f188729433e24aec9bbb3028f1763901aa8d5072dfbdf02133f63b1c880b10c73eed1004d4a2bd6fec9762827e3185d3",
+    "PCR0": "c868a8a7f097fc0bf4816de4585fa34720c9bad8dbbbb71f19ffbef864aadd644c2ddca4eab22e912a3b0cbb2565e2bf",
     "PCR1": "4b4d5b3661b3efc12920900c80e126e4ce783c522de6c02a2a5bf7af3a2b9327b86776f188e4be1c1c404a129dbda493",
-    "PCR2": "e118cd123343a76d52fc02319b82520da819d9b12c7d74593988ff244df646b43d3b73562a30365ad1c68340b386658d"
+    "PCR2": "7376b7f7ee44a23cb0491139c41cff6b0eed8ed4e66c7acc4d5e814aafa22dc82873b16aa25b8cb896ff9c8af501d336"
   }
 }
 ```
@@ -34,14 +34,15 @@ just serve-alpine
 just build-test-app make-test-fifos
 cp example.env .env
 docker compose up -d
-just ask-funds
+just ask-funds 'why did the worker quit his job at the recycling factory? because it was soda pressing.'
 ...
 addr = A7xYaa6PGwUFGYY5FYfMrZe6HJp5pSY7dBthdnPNbFE
 sol = 0.025
 json = {
-  "signature": "5s4EUD6R8q9YobVSxC2ntnTdyKaZT1vduPdafKJCbwNnD1cGk6cDJ4Ha4T3gjqMWGLBGUPaSadCPyCYfxEev846t",
-  "from": "DDWiwmkP5SiRExFmKSBWgfLNvDcq3B5eGXRvmvE6egGm",
-  "to": "A7xYaa6PGwUFGYY5FYfMrZe6HJp5pSY7dBthdnPNbFE"
+  "signature": "5kxUx3B3ZooxPCiLNQWGbRzKUb5weV7PBFgyakzbsCuZStFiMamNwyyUHXPhZqteKoyKgRNFMVR6oAkKhh745xHX",
+  "from": "AkHqQ324DvygPxuhyYs9BTVG8b1BXzTnpbCxqG8zousm",
+  "to": "A7xYaa6PGwUFGYY5FYfMrZe6HJp5pSY7dBthdnPNbFE",
+  "thoughts": "The joke is a clever play on words, combining the concept of being 'so depressing' with 'soda pressing' related to recycling. It's humorous and lighthearted."
 }
 sol = 0.026
 (look inside python/ask-funds.py)

@@ -62,8 +62,8 @@ build-test-app:
 add-funds:
     {{sudo}} docker run --rm --entrypoint /app/add-funds.sh --env-file .env lockhost-python-test-app
 
-ask-funds:
-    {{sudo}} docker run --rm --entrypoint /app/ask-funds.sh --network locknet --env-file .env lockhost-python-test-app http://atsocat:8889
+ask-funds joke:
+    {{sudo}} docker run --rm --entrypoint /app/ask-funds.sh --network locknet --env-file .env lockhost-python-test-app http://atsocat:8889 {{joke}}
 
 mkcert:
     echo "authorityKeyIdentifier=keyid,issuer" > domains.ext

@@ -26,7 +26,8 @@ async def main():
     print(f"sol = {balance}")
 
     # params
-    message = "why did the worker quit his job at the recycling factory? because it was soda pressing"
+    joke = " ".join(sys.argv[2:])
+    message = joke
     addr = str(sol_key.pubkey())
     params = {"message": message, "addr": addr}
 
@@ -38,8 +39,8 @@ async def main():
     pretty = json.dumps(data, indent=2)
     print(f"json = {pretty}")
 
-    # thoughts = reason for denial
-    if "thoughts" in data:
+    # no signature = no reward
+    if "signature" not in data:
         return
 
     # balance after ask
