@@ -86,7 +86,7 @@ async def ask_handler(request):
         { "role": "user", "content": message }
     ]
     reply = await oai.chat.completions.create(
-        model="gpt-4o", temperature=1,
+        model="gpt-4o-mini", temperature=1,
         tools=tools, tool_choice={ "type": "function", "function": { "name": "record_if_joke_was_funny" }},
         messages=messages
     )
@@ -123,7 +123,7 @@ async def ask_handler(request):
     signature = str(signature.value)
     fromm = str(sol_key.pubkey())
     to = request.query.get("addr", "")
-    return web.json_response({"signature": signature, "from": fromm, "to": to})
+    return web.json_response({"signature": signature, "from": fromm, "to": to, "thoughts": reply["thoughts"]})
 
 async def create_app():
     sol_client = await MySolClient.create()
