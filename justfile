@@ -1,5 +1,4 @@
 sudo := "$(docker info > /dev/null 2>&1 || echo 'sudo')"
-certs := "$(cat cert.key > /dev/null 2>&1 && echo '-v ./cert.key:/runtime/cert.key -v ./cert.crt:/runtime/cert.crt')"
 
 #########################
 ## Reproducible builds ##
@@ -59,24 +58,8 @@ build-test-app:
     just make-test-net
     {{sudo}} docker buildx build --platform="linux/amd64" --build-arg PROD=false -f Dockerfile.app -t lockhost-python-test-app .
 
-add-funds:
-    {{sudo}} docker run --rm --entrypoint /app/add-funds.sh --env-file .env lockhost-python-test-app
-
-ask-funds joke:
-    {{sudo}} docker run --rm --entrypoint /app/ask-funds.sh --network locknet --env-file .env lockhost-python-test-app http://atsocat:8889 {{joke}}
-
-mkcert:
-    echo "authorityKeyIdentifier=keyid,issuer" > domains.ext
-    echo "basicConstraints=CA:FALSE" >> domains.ext
-    echo "keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment" >> domains.ext
-    echo "subjectAltName = @alt_names" >> domains.ext
-    echo "[alt_names]" >> domains.ext
-    echo "DNS.1 = localhost" >> domains.ext
-    openssl req -x509 -nodes -new -sha256 -days 1024 -newkey rsa:2048 -keyout ca.key -out ca.pem -subj "/C=US/CN=Lock-Host-CA"
-    openssl x509 -outform pem -in ca.pem -out ca.crt
-    openssl req -new -nodes -newkey rsa:2048 -keyout cert.key -out cert.csr -subj "/C=US/ST=YourState/L=YourCity/O=Example-Certificates/CN=localhost"
-    openssl x509 -req -sha256 -days 1024 -in cert.csr -CA ca.pem -CAkey ca.key -CAcreateserial -extfile domains.ext -out cert.crt
-    rm ca.key ca.pem ca.srl cert.csr domains.ext
+joke joke:
+    {{sudo}} docker run --rm --entrypoint /app/joke.sh --network locknet --env-file .env lockhost-python-test-app http://atsocat:8889 {{joke}}
 
 
 #########################
