@@ -45,8 +45,8 @@ async def add_cors_headers(request, handler):
     return response
 
 # called by user
-async def wallet_handler(request):
-    print("got wallet request")
+async def balance_handler(request):
+    print("get balance")
     pubkey = request.query.get("addr", "")
     pubkey = Pubkey.from_string(pubkey) if pubkey != "" else sol_key.pubkey()
     sol_client = request.app["sol_client"]
@@ -76,8 +76,8 @@ tools = [{
 }]
 
 # called by user
-async def ask_handler(request):
-    print("got oai request")
+async def joke_handler(request):
+    print("get joke")
     addr = request.query.get("addr", "")
     addr = Pubkey.from_string(addr)
     message = unquote(request.query.get("message", ""))
@@ -93,14 +93,12 @@ async def ask_handler(request):
 
     reply = reply.choices[0].message.tool_calls[0]
     reply = json.loads(reply.function.arguments)
-    print(f"got oai reply {reply}")
+    print(f"oai reply {reply}")
     funny = reply["decision"] == "funny"
 
     if funny == False:
-        print("oai = not funny")
         return web.json_response({"thoughts": reply["thoughts"]})
 
-    print("oai = funny")
     lamports_to_send = 1_000_000
     ixns = [transfer(
         TransferParams(
@@ -115,7 +113,6 @@ async def ask_handler(request):
     latest_blockhash = await sol_client.get_latest_blockhash()
     txn = Transaction([sol_key], message, latest_blockhash.value.blockhash)
     signature = await sol_client.send_transaction(txn)
-    print(f"signature = {str(signature.value)}")
 
     latest_blockhash = await sol_client.get_latest_blockhash()
     await sol_client.confirm_transaction(tx_sig=signature.value, last_valid_block_height=latest_blockhash.value.last_valid_block_height)
@@ -129,10 +126,10 @@ async def create_app():
     sol_client = await MySolClient.create()
     app = web.Application(middlewares=[add_cors_headers])
     app["sol_client"] = sol_client
-    app.router.add_route("OPTIONS", "/api/wallet", cors_handler)
-    app.router.add_route("OPTIONS", "/api/ask", cors_handler)
-    app.router.add_route("GET", "/api/wallet", wallet_handler)
-    app.router.add_route("GET", "/api/ask", ask_handler)
+    app.router.add_route("OPTIONS", "/api/balance", cors_handler)
+    app.router.add_route("OPTIONS", "/api/joke", cors_handler)
+    app.router.add_route("GET", "/api/balance", balance_handler)
+    app.router.add_route("GET", "/api/joke", joke_handler)
     return app
 
 # connections arrive from runtime

@@ -33,7 +33,7 @@ async def main():
 
     # send request
     api = sys.argv[1]
-    api = f"{api}/api/ask"
+    api = f"{api}/api/joke"
     data = requests.get(api, params=params)
     data = data.json()
     pretty = json.dumps(data, indent=2)

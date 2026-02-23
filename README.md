@@ -4,7 +4,7 @@ Lock.host python example, see: [Lock.host](https://github.com/rhodey/lock.host)
 This demonstration uses OpenAI to control a Solana wallet:
 + Unmodified OpenAI lib
 + Unmodified Solana lib
-+ Hit /api/ask?message=your best joke&addr=abc123
++ Hit /api/joke?message=your best joke&addr=abc123
 + OAI is asked "You are to decide if a joke is funny or not"
 + If so 0.001 SOL is sent to addr
 
@@ -17,9 +17,9 @@ just build-app
 {
   "Measurements": {
     "HashAlgorithm": "Sha384 { ... }",
-    "PCR0": "e6227931d1d846e84ba568a33fbab583d24ce6f016e465eb6735af6f65048fd583911979233d1f53784a7a28c612878f",
+    "PCR0": "25411de098dd21a83a252fcb64bb2a28d7a5fe26df1a820f59abb73222a91f6cc9605d376ca37838d297c4e0e5e187a7",
     "PCR1": "4b4d5b3661b3efc12920900c80e126e4ce783c522de6c02a2a5bf7af3a2b9327b86776f188e4be1c1c404a129dbda493",
-    "PCR2": "8e2166ac3d0a5afcc2461eb4009b0dde9b600f9d7216c90c8c2ae2331912d82bb502ef1bbc5914f456ba8b7864b22562"
+    "PCR2": "ee5d87b4c5f0f5ab6b3a0abb79bfb161f52e455f6ab66e7f3c38e98e2cba710e63ae9bfd340a106535afaf9729886b4e"
   }
 }
 ```
@@ -34,7 +34,7 @@ just serve-alpine
 just build-test-app make-test-fifos
 cp example.env .env
 docker compose up -d
-just ask-funds 'why did the worker quit his job at the recycling factory? because it was soda pressing.'
+just joke 'why did the worker quit his job at the recycling factory? because it was soda pressing.'
 ...
 addr = A7xYaa6PGwUFGYY5FYfMrZe6HJp5pSY7dBthdnPNbFE
 sol = 0.025
@@ -45,7 +45,7 @@ json = {
   "thoughts": "The joke is a clever play on words, combining the concept of being 'so depressing' with 'soda pressing' related to recycling. It's humorous and lighthearted."
 }
 sol = 0.026
-(look inside python/ask-funds.py)
+(look inside python/joke.py)
 ```
 
 ## Atsocat
