@@ -1,4 +1,4 @@
-# Lock.host-python
+# Lock.host-python (test)
 Lock.host python example, see: [Lock.host](https://github.com/rhodey/lock.host)
 
 This demonstration uses OpenAI to control a Solana wallet:
